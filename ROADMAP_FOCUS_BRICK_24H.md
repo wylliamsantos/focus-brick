@@ -16,9 +16,9 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta) pro
 3. ✅ Criar modelos base (`PomodoroConfig`, `SessionRecord`, `DailySummary`).
 
 ### Fase 2 — Core Pomodoro
-4. Implementar motor de timer (focus/break/long break).
-5. Implementar controles (start/pause/resume/reset/skip).
-6. Implementar ciclo longo a cada 4 focos.
+4. ✅ Implementar motor de timer (focus/break/long break).
+5. ✅ Implementar controles (start/pause/resume/reset/skip).
+6. ✅ Implementar ciclo longo a cada 4 focos.
 7. Persistir estado de sessão localmente.
 
 ### Fase 3 — UX principal

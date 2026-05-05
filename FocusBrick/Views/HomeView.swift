@@ -17,6 +17,10 @@ struct HomeView: View {
                 .font(FBTypography.body)
                 .foregroundColor(FBColors.secondary)
 
+            Text(viewModel.cycleProgressLabel)
+                .font(FBTypography.body)
+                .foregroundColor(FBColors.secondary)
+
             HStack(spacing: FBSpacing.md) {
                 Button(viewModel.isRunning ? "Pausar" : "Iniciar") {
                     viewModel.isRunning ? viewModel.pause() : viewModel.start()

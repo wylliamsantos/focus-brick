@@ -7,11 +7,11 @@ final class TimerViewModel: ObservableObject {
         case shortBreak = "Pausa"
         case longBreak = "Pausa Longa"
 
-        var defaultDuration: Int {
+        var sessionPhase: SessionRecord.Phase {
             switch self {
-            case .focus: return 25 * 60
-            case .shortBreak: return 5 * 60
-            case .longBreak: return 15 * 60
+            case .focus: return .focus
+            case .shortBreak: return .shortBreak
+            case .longBreak: return .longBreak
             }
         }
     }
@@ -20,16 +20,20 @@ final class TimerViewModel: ObservableObject {
     @Published private(set) var currentPhaseLabel: String
     @Published private(set) var phase: Phase
     @Published private(set) var isRunning: Bool = false
+    @Published private(set) var cycleProgressLabel: String
 
+    private let config: PomodoroConfig
     private var timer: Timer?
     private(set) var secondsRemaining: Int
     private var completedFocusSessions: Int = 0
 
-    init() {
+    init(config: PomodoroConfig = .init()) {
+        self.config = config
         self.phase = .focus
-        self.secondsRemaining = phase.defaultDuration
-        self.displayTime = Self.format(seconds: secondsRemaining)
-        self.currentPhaseLabel = phase.rawValue
+        self.secondsRemaining = config.focusMinutes * 60
+        self.displayTime = Self.format(seconds: config.focusMinutes * 60)
+        self.currentPhaseLabel = Phase.focus.rawValue
+        self.cycleProgressLabel = "Ciclo 0/\(config.sessionsBeforeLongBreak)"
     }
 
     deinit {
@@ -55,7 +59,7 @@ final class TimerViewModel: ObservableObject {
 
     func reset() {
         pause()
-        secondsRemaining = phase.defaultDuration
+        secondsRemaining = duration(for: phase)
         refreshPresentation()
     }
 
@@ -94,18 +98,30 @@ final class TimerViewModel: ObservableObject {
         switch phase {
         case .focus:
             completedFocusSessions += 1
-            phase = completedFocusSessions.isMultiple(of: 4) ? .longBreak : .shortBreak
+            phase = completedFocusSessions.isMultiple(of: config.sessionsBeforeLongBreak) ? .longBreak : .shortBreak
         case .shortBreak, .longBreak:
             phase = .focus
         }
 
-        secondsRemaining = phase.defaultDuration
+        secondsRemaining = duration(for: phase)
         refreshPresentation()
+    }
+
+    private func duration(for phase: Phase) -> Int {
+        switch phase {
+        case .focus:
+            return config.focusMinutes * 60
+        case .shortBreak:
+            return config.shortBreakMinutes * 60
+        case .longBreak:
+            return config.longBreakMinutes * 60
+        }
     }
 
     private func refreshPresentation() {
         displayTime = Self.format(seconds: secondsRemaining)
         currentPhaseLabel = phase.rawValue
+        cycleProgressLabel = "Ciclo \(completedFocusSessions % config.sessionsBeforeLongBreak)/\(config.sessionsBeforeLongBreak)"
     }
 
     private static func format(seconds: Int) -> String {
