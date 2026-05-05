@@ -40,7 +40,10 @@ Pomodoro app iOS (SwiftUI), offline-first, sem login e sem tracking.
 - Dados ficam somente no dispositivo (UserDefaults).
 
 ## Publicação (resumo)
-Use o checklist completo em `docs/APP_STORE_CHECKLIST.md`.
+Use os documentos de release em `docs/`:
+- `docs/APP_STORE_CHECKLIST.md`
+- `docs/APP_STORE_METADATA_TEMPLATE.md`
+- `docs/ASSETS_PLACEHOLDERS.md`
 
 Passos mínimos:
 1. Definir bundle id e assinatura.

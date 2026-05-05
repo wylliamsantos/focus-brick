@@ -39,7 +39,7 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta) pro
 
 ### Fase 6 — Qualidade e release
 18. ✅ Ajustes finais de UI/UX e acessibilidade básica.
-19. Placeholder de ícones/launch screen e textos da App Store.
+19. ✅ Placeholder de ícones/launch screen e textos da App Store.
 20. ✅ Checklist de submissão (Privacy: No Data Collected).
 21. ✅ README com instruções de build/publicação.
 
@@ -55,5 +55,5 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta) pro
 - [x] Projeto iniciado
 - [x] MVP funcional
 - [x] Monetização integrada
-- [ ] Release candidate
-- [ ] Entrega final
+- [x] Release candidate
+- [x] Entrega final
