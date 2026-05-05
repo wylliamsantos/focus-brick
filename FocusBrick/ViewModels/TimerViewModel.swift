@@ -1,4 +1,6 @@
 import Foundation
+import UIKit
+import AudioToolbox
 
 @MainActor
 final class TimerViewModel: ObservableObject {
@@ -30,17 +32,21 @@ final class TimerViewModel: ObservableObject {
     @Published private(set) var isRunning: Bool = false
     @Published private(set) var cycleProgressLabel: String
     @Published private(set) var progress: Double = 1
+    @Published private(set) var records: [SessionRecord] = []
     @Published var config: PomodoroConfig
 
     private let store: SessionStore
+    private let notificationService: NotificationService
     private var timer: Timer?
     private(set) var secondsRemaining: Int
     private var completedFocusSessions: Int = 0
     private var phaseStartedAt: Date = .now
 
-    init(config: PomodoroConfig = .init(), store: SessionStore = UserDefaultsSessionStore()) {
+    init(config: PomodoroConfig = .init(), store: SessionStore = UserDefaultsSessionStore(), notificationService: NotificationService = UserNotificationService()) {
         self.config = config
         self.store = store
+        self.notificationService = notificationService
+        self.records = store.loadAll()
 
         if let state = store.loadState() {
             let restoredPhase = Phase(sessionPhase: state.phase)
@@ -60,16 +66,39 @@ final class TimerViewModel: ObservableObject {
             self.cycleProgressLabel = "Ciclo 0/\(max(1, config.sessionsBeforeLongBreak))"
         }
 
-        if isRunning { startTicker() }
+        notificationService.requestAuthorizationIfNeeded()
+        if isRunning {
+            scheduleEndNotification()
+            startTicker()
+        }
     }
 
     deinit { timer?.invalidate() }
+
+    var todayFocusedMinutes: Int {
+        let cal = Calendar.current
+        return records
+            .filter { $0.phase == .focus && $0.completed && cal.isDateInToday($0.endAt) }
+            .reduce(0) { $0 + $1.plannedMinutes }
+    }
+
+    var todayCompletedSessions: Int {
+        let cal = Calendar.current
+        return records.filter { $0.phase == .focus && $0.completed && cal.isDateInToday($0.endAt) }.count
+    }
+
+    var last7DaysRecords: [SessionRecord] {
+        let start = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? .distantPast
+        return records.filter { $0.endAt >= start && $0.phase == .focus && $0.completed }
+            .sorted { $0.endAt > $1.endAt }
+    }
 
     func start() {
         guard !isRunning else { return }
         phaseStartedAt = .now
         isRunning = true
         persistState()
+        scheduleEndNotification()
         startTicker()
     }
 
@@ -78,6 +107,7 @@ final class TimerViewModel: ObservableObject {
         isRunning = false
         timer?.invalidate()
         timer = nil
+        notificationService.cancelPendingPhaseNotifications()
         persistState()
     }
 
@@ -113,8 +143,12 @@ final class TimerViewModel: ObservableObject {
         guard isRunning else { return }
         if secondsRemaining > 0 { secondsRemaining -= 1; refreshPresentation(); persistState() }
         if secondsRemaining == 0 {
+            playCompletionFeedback()
             completeCurrentPhaseAndAdvance(completed: true)
-            if isRunning { startTicker() }
+            if isRunning {
+                scheduleEndNotification()
+                startTicker()
+            }
         }
     }
 
@@ -124,6 +158,7 @@ final class TimerViewModel: ObservableObject {
         if completed {
             let record = SessionRecord(id: UUID(), startAt: phaseStartedAt, endAt: .now, phase: endedPhase.sessionPhase, plannedMinutes: plannedMinutes, completed: true)
             store.save(record: record)
+            records = store.loadAll()
         }
 
         switch phase {
@@ -160,6 +195,17 @@ final class TimerViewModel: ObservableObject {
     private func persistState() {
         let state = TimerSessionState(phase: phase.sessionPhase, secondsRemaining: secondsRemaining, completedFocusSessions: completedFocusSessions, isRunning: isRunning, savedAt: .now)
         store.saveState(state)
+    }
+
+    private func scheduleEndNotification() {
+        notificationService.cancelPendingPhaseNotifications()
+        notificationService.schedulePhaseEndNotification(phaseName: currentPhaseLabel, in: secondsRemaining)
+    }
+
+    private func playCompletionFeedback() {
+        AudioServicesPlaySystemSound(1005)
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
     }
 
     private static func computeProgress(remaining: Int, total: Int) -> Double {
