@@ -6,52 +6,90 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: FBSpacing.lg) {
-                ZStack {
-                    Circle()
-                        .stroke(FBColors.secondary.opacity(0.2), lineWidth: 14)
-                        .frame(width: 240, height: 240)
+            ScrollView {
+                VStack(spacing: FBSpacing.lg) {
+                    ZStack {
+                        Circle()
+                            .stroke(FBColors.secondary.opacity(0.2), lineWidth: 14)
+                            .frame(width: 240, height: 240)
 
-                    Circle()
-                        .trim(from: 0, to: viewModel.progress)
-                        .stroke(FBColors.primary, style: StrokeStyle(lineWidth: 14, lineCap: .round))
-                        .rotationEffect(.degrees(-90))
-                        .frame(width: 240, height: 240)
-                        .animation(.easeInOut(duration: 0.25), value: viewModel.progress)
+                        Circle()
+                            .trim(from: 0, to: viewModel.progress)
+                            .stroke(FBColors.primary, style: StrokeStyle(lineWidth: 14, lineCap: .round))
+                            .rotationEffect(.degrees(-90))
+                            .frame(width: 240, height: 240)
+                            .animation(.easeInOut(duration: 0.25), value: viewModel.progress)
 
-                    VStack(spacing: FBSpacing.sm) {
-                        Text(viewModel.currentPhaseLabel)
-                            .font(FBTypography.body)
-                            .foregroundColor(FBColors.secondary)
+                        VStack(spacing: FBSpacing.sm) {
+                            Text(viewModel.currentPhaseLabel)
+                                .font(FBTypography.body)
+                                .foregroundColor(FBColors.secondary)
 
-                        Text(viewModel.displayTime)
-                            .font(FBTypography.timer)
-                            .monospacedDigit()
+                            Text(viewModel.displayTime)
+                                .font(FBTypography.timer)
+                                .monospacedDigit()
+                                .foregroundColor(FBColors.primary)
+                        }
+                    }
+
+                    Text(viewModel.cycleProgressLabel)
+                        .font(FBTypography.body)
+                        .foregroundColor(FBColors.secondary)
+
+                    HStack(spacing: FBSpacing.md) {
+                        Button(viewModel.isRunning ? "Pausar" : "Iniciar") {
+                            viewModel.isRunning ? viewModel.pause() : viewModel.start()
+                        }
+                        .buttonStyle(.borderedProminent)
+
+                        Button("Retomar") { viewModel.resume() }
+                            .buttonStyle(.bordered)
+
+                        Button("Reset") { viewModel.reset() }
+                            .buttonStyle(.bordered)
+                    }
+
+                    Button("Pular fase") { viewModel.skip() }
+                        .buttonStyle(.bordered)
+
+                    VStack(alignment: .leading, spacing: FBSpacing.sm) {
+                        Text("Hoje")
+                            .font(FBTypography.title)
                             .foregroundColor(FBColors.primary)
+                        Text("Sessões concluídas: \(viewModel.todayCompletedSessions)")
+                        Text("Minutos focados: \(viewModel.todayFocusedMinutes)")
                     }
-                }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                Text(viewModel.cycleProgressLabel)
-                    .font(FBTypography.body)
-                    .foregroundColor(FBColors.secondary)
+                    VStack(alignment: .leading, spacing: FBSpacing.sm) {
+                        Text("Histórico (7 dias)")
+                            .font(FBTypography.title)
+                            .foregroundColor(FBColors.primary)
 
-                HStack(spacing: FBSpacing.md) {
-                    Button(viewModel.isRunning ? "Pausar" : "Iniciar") {
-                        viewModel.isRunning ? viewModel.pause() : viewModel.start()
+                        if viewModel.last7DaysRecords.isEmpty {
+                            Text("Sem sessões concluídas ainda.")
+                                .foregroundColor(FBColors.secondary)
+                        } else {
+                            ForEach(viewModel.last7DaysRecords.prefix(12)) { record in
+                                HStack {
+                                    Text(record.endAt, style: .date)
+                                    Spacer()
+                                    Text("\(record.plannedMinutes) min")
+                                }
+                                .font(FBTypography.body)
+                            }
+                        }
                     }
-                    .buttonStyle(.borderedProminent)
-
-                    Button("Retomar") { viewModel.resume() }
-                        .buttonStyle(.bordered)
-
-                    Button("Reset") { viewModel.reset() }
-                        .buttonStyle(.bordered)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
-
-                Button("Pular fase") { viewModel.skip() }
-                    .buttonStyle(.bordered)
+                .padding(FBSpacing.lg)
             }
-            .padding(FBSpacing.lg)
             .background(FBColors.background.ignoresSafeArea())
             .navigationTitle("Focus Brick")
             .toolbar {
