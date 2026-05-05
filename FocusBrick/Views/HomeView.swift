@@ -2,7 +2,9 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel: TimerViewModel
+    @EnvironmentObject private var purchaseService: PurchaseService
     @State private var showingSettings = false
+    @State private var showingPaywall = false
 
     var body: some View {
         NavigationStack {
@@ -87,6 +89,26 @@ struct HomeView: View {
                     .padding()
                     .background(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                    VStack(alignment: .leading, spacing: FBSpacing.sm) {
+                        Text("Focus Brick Pro")
+                            .font(FBTypography.title)
+                            .foregroundColor(FBColors.primary)
+
+                        if purchaseService.isProUnlocked {
+                            Text("Pro desbloqueado ✅")
+                                .foregroundColor(.green)
+                        } else {
+                            Text("Desbloqueie temas extras e personalização avançada.")
+                                .foregroundColor(FBColors.secondary)
+                            Button("Ver Pro") { showingPaywall = true }
+                                .buttonStyle(.borderedProminent)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 .padding(FBSpacing.lg)
             }
@@ -99,6 +121,11 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showingSettings) {
                 SettingsView(viewModel: viewModel)
+                    .environmentObject(purchaseService)
+            }
+            .sheet(isPresented: $showingPaywall) {
+                PaywallView()
+                    .environmentObject(purchaseService)
             }
         }
     }
@@ -106,12 +133,15 @@ struct HomeView: View {
 
 struct SettingsView: View {
     @ObservedObject var viewModel: TimerViewModel
+    @EnvironmentObject private var purchaseService: PurchaseService
     @Environment(\.dismiss) private var dismiss
 
     @State private var focus = "25"
     @State private var shortBreak = "5"
     @State private var longBreak = "15"
     @State private var cycle = "4"
+    @State private var proThemeEnabled = false
+    @State private var advancedCustomization = false
 
     var body: some View {
         NavigationStack {
@@ -124,6 +154,19 @@ struct SettingsView: View {
 
                 Section("Ciclo") {
                     TextField("Sessões para pausa longa", text: $cycle).keyboardType(.numberPad)
+                }
+
+                Section("Recursos Pro") {
+                    Toggle("Tema extra", isOn: $proThemeEnabled)
+                        .disabled(!purchaseService.isProUnlocked)
+                    Toggle("Customização avançada", isOn: $advancedCustomization)
+                        .disabled(!purchaseService.isProUnlocked)
+
+                    if !purchaseService.isProUnlocked {
+                        Text("Desbloqueie o Pro para habilitar estes recursos.")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
             .navigationTitle("Configurações")

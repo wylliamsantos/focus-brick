@@ -33,9 +33,9 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta) pro
 14. Card de sequência diária (streak simples local).
 
 ### Fase 5 — Monetização
-15. Integrar StoreKit (compra única).
-16. Tela paywall simples + estado desbloqueado local.
-17. Toggle de features Pro (temas extras / custom avançado).
+15. ✅ Integrar StoreKit (compra única).
+16. ✅ Tela paywall simples + estado desbloqueado local.
+17. ✅ Toggle de features Pro (temas extras / custom avançado).
 
 ### Fase 6 — Qualidade e release
 18. Ajustes finais de UI/UX e acessibilidade básica.
@@ -54,6 +54,6 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta) pro
 ## Status
 - [x] Projeto iniciado
 - [ ] MVP funcional
-- [ ] Monetização integrada
+- [x] Monetização integrada
 - [ ] Release candidate
 - [ ] Entrega final
