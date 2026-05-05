@@ -19,11 +19,11 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta) pro
 4. ✅ Implementar motor de timer (focus/break/long break).
 5. ✅ Implementar controles (start/pause/resume/reset/skip).
 6. ✅ Implementar ciclo longo a cada 4 focos.
-7. Persistir estado de sessão localmente.
+7. ✅ Persistir estado de sessão localmente.
 
 ### Fase 3 — UX principal
-8. Tela Home com timer grande + progresso circular.
-9. Tela Configurações (25/5 default + custom).
+8. ✅ Tela Home com timer grande + progresso circular.
+9. ✅ Tela Configurações (25/5 default + custom).
 10. Feedback sonoro/háptico de término de sessão.
 11. Notificações locais para fim de foco/pausa.
 
@@ -52,7 +52,7 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta) pro
 - Documentação mínima para publicação.
 
 ## Status
-- [ ] Projeto iniciado
+- [x] Projeto iniciado
 - [ ] MVP funcional
 - [ ] Monetização integrada
 - [ ] Release candidate
