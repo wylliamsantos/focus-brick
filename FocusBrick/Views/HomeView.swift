@@ -26,11 +26,13 @@ struct HomeView: View {
                             Text(viewModel.currentPhaseLabel)
                                 .font(FBTypography.body)
                                 .foregroundColor(FBColors.secondary)
+                                .accessibilityAddTraits(.isHeader)
 
                             Text(viewModel.displayTime)
                                 .font(FBTypography.timer)
                                 .monospacedDigit()
                                 .foregroundColor(FBColors.primary)
+                                .accessibilityLabel("Tempo restante: \(viewModel.displayTime)")
                         }
                     }
 
@@ -43,16 +45,21 @@ struct HomeView: View {
                             viewModel.isRunning ? viewModel.pause() : viewModel.start()
                         }
                         .buttonStyle(.borderedProminent)
+                        .accessibilityLabel(viewModel.isRunning ? "Pausar timer" : "Iniciar timer")
 
                         Button("Retomar") { viewModel.resume() }
                             .buttonStyle(.bordered)
+                            .disabled(viewModel.isRunning)
+                            .accessibilityLabel("Retomar timer")
 
                         Button("Reset") { viewModel.reset() }
                             .buttonStyle(.bordered)
+                            .accessibilityLabel("Resetar timer")
                     }
 
                     Button("Pular fase") { viewModel.skip() }
                         .buttonStyle(.bordered)
+                        .accessibilityLabel("Pular fase atual")
 
                     VStack(alignment: .leading, spacing: FBSpacing.sm) {
                         Text("Hoje")
