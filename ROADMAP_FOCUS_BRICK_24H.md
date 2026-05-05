@@ -11,9 +11,9 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta) pro
 ## Backlog executável (ordem)
 
 ### Fase 1 — Fundação do projeto
-1. Criar estrutura do projeto iOS SwiftUI (App, Views, ViewModels, Domain, Services).
-2. Definir design tokens azul clean (cores, tipografia, espaçamento).
-3. Criar modelos base (`PomodoroConfig`, `SessionRecord`, `DailySummary`).
+1. ✅ Criar estrutura do projeto iOS SwiftUI (App, Views, ViewModels, Domain, Services).
+2. ✅ Definir design tokens azul clean (cores, tipografia, espaçamento).
+3. ✅ Criar modelos base (`PomodoroConfig`, `SessionRecord`, `DailySummary`).
 
 ### Fase 2 — Core Pomodoro
 4. Implementar motor de timer (focus/break/long break).
