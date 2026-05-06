@@ -10,6 +10,9 @@ struct FocusBrickApp: App {
             HomeView(viewModel: timerViewModel)
                 .environmentObject(purchaseService)
                 .preferredColorScheme(.light)
+                .onOpenURL { url in
+                    timerViewModel.handleDeepLink(url)
+                }
         }
     }
 }

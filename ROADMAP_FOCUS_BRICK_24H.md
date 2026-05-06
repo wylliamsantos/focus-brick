@@ -34,10 +34,10 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta), co
 - [x] 14. Card de sequência diária (streak simples local).
 
 ### Fase 5 — Widgets (iOS)
-- [ ] 15. Criar extensão WidgetKit (small/medium).
-- [ ] 16. Widget “Sessão Atual” (fase, tempo restante, estado).
-- [ ] 17. Widget “Resumo do Dia” (sessões + minutos focados).
-- [ ] 18. Deep link do widget para abrir app na tela correta.
+- [x] 15. Criar extensão WidgetKit (small/medium).
+- [x] 16. Widget “Sessão Atual” (fase, tempo restante, estado).
+- [x] 17. Widget “Resumo do Dia” (sessões + minutos focados).
+- [x] 18. Deep link do widget para abrir app na tela correta.
 
 ### Fase 6 — watchOS companion
 - [ ] 19. Criar target watchOS (SwiftUI).

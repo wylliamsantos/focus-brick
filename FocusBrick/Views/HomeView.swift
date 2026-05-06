@@ -8,8 +8,9 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: FBSpacing.lg) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: FBSpacing.lg) {
                     ZStack {
                         Circle()
                             .stroke(FBColors.secondary.opacity(0.2), lineWidth: 14)
@@ -73,6 +74,7 @@ struct HomeView: View {
                     .padding()
                     .background(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .id("daily-summary")
 
                     VStack(alignment: .leading, spacing: FBSpacing.sm) {
                         Text("Histórico (7 dias)")
@@ -117,8 +119,19 @@ struct HomeView: View {
                     .padding()
                     .background(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .id("current-session")
                 }
                 .padding(FBSpacing.lg)
+                .onChange(of: viewModel.deepLinkTarget) { _, target in
+                    guard let target else { return }
+                    withAnimation {
+                        switch target {
+                        case .currentSession: proxy.scrollTo("current-session", anchor: .top)
+                        case .dailySummary: proxy.scrollTo("daily-summary", anchor: .top)
+                        }
+                    }
+                    viewModel.deepLinkTarget = nil
+                }
             }
             .background(FBColors.background.ignoresSafeArea())
             .navigationTitle("Focus Brick")
