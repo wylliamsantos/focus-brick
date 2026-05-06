@@ -43,15 +43,17 @@ final class TimerViewModel: ObservableObject {
 
     private let store: SessionStore
     private let notificationService: NotificationService
+    private let watchConnectivityService: WatchConnectivitySyncing
     private var timer: Timer?
     private(set) var secondsRemaining: Int
     private var completedFocusSessions: Int = 0
     private var phaseStartedAt: Date = .now
 
-    init(config: PomodoroConfig = .init(), store: SessionStore = UserDefaultsSessionStore(), notificationService: NotificationService = UserNotificationService()) {
+    init(config: PomodoroConfig = .init(), store: SessionStore = UserDefaultsSessionStore(), notificationService: NotificationService = UserNotificationService(), watchConnectivityService: WatchConnectivitySyncing = WatchConnectivityService.shared) {
         self.config = store.loadConfig() ?? config
         self.store = store
         self.notificationService = notificationService
+        self.watchConnectivityService = watchConnectivityService
         self.records = store.loadAll()
 
         if let state = store.loadState() {
@@ -73,6 +75,7 @@ final class TimerViewModel: ObservableObject {
         }
 
         notificationService.requestAuthorizationIfNeeded()
+        watchConnectivityService.activateIfNeeded()
         if isRunning {
             scheduleEndNotification()
             startTicker()
@@ -235,6 +238,11 @@ final class TimerViewModel: ObservableObject {
         let state = TimerSessionState(phase: phase.sessionPhase, secondsRemaining: secondsRemaining, completedFocusSessions: completedFocusSessions, isRunning: isRunning, savedAt: .now)
         store.saveState(state)
         saveWidgetSnapshot()
+
+        if let snapshot = store.loadWidgetSnapshot() {
+            let syncState = WatchSessionState(from: state, snapshot: snapshot)
+            watchConnectivityService.send(state: syncState)
+        }
     }
 
     private func saveWidgetSnapshot() {
