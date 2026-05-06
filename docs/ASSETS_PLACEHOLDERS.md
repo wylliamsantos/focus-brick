@@ -1,6 +1,6 @@
 # Focus Brick — Placeholders de Assets
 
-Este documento marca os assets obrigatórios para publicação.
+This document tracks required assets for release.
 
 ## App Icon
 - [ ] 1024x1024 (App Store)
@@ -14,7 +14,7 @@ Este documento marca os assets obrigatórios para publicação.
 - [ ] iPhone 6.7" (mínimo 3)
 - [ ] iPhone 6.1" (mínimo 3)
 - [ ] iPad (opcional, se habilitar suporte)
-- [ ] Fluxos sugeridos: Home timer, Histórico, Configurações/Pro
+- [ ] Suggested flows: Home timer, Histórico, Settings/Pro
 
 ## Capturas complementares (recomendado)
 - [ ] Widget small e medium em tela inicial
@@ -22,6 +22,6 @@ Este documento marca os assets obrigatórios para publicação.
 - [ ] Apple Watch: estado pausado/finalizado
 
 ## Texto nas capturas
-- [ ] Headline 1: "Foque em blocos, sem distrações"
-- [ ] Headline 2: "Pomodoro completo com histórico local"
+- [ ] Headline 1: "Focus in blocks, no distractions"
+- [ ] Headline 2: "Full Pomodoro with local history"
 - [ ] Headline 3: "Sem login. Sem tracking."

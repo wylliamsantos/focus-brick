@@ -9,10 +9,10 @@ Pomodoro app iOS (SwiftUI), offline-first, sem login e sem tracking.
 
 ## Estrutura
 - `FocusBrick/App`: entrada do app
-- `FocusBrick/Views`: Home, Configurações e Paywall
-- `FocusBrick/ViewModels`: lógica do timer e estado de UI
-- `FocusBrick/Services`: persistência local, notificações e StoreKit
-- `FocusBrick/Domain`: modelos de domínio
+- `FocusBrick/Views`: Home, Settings e Paywall
+- `FocusBrick/ViewModels`: timer logic and UI state
+- `FocusBrick/Services`: local persistence, notifications, and StoreKit
+- `FocusBrick/Domain`: domain models
 - `FocusBrick/Resources`: design tokens
 
 ## Como buildar
@@ -25,15 +25,15 @@ Pomodoro app iOS (SwiftUI), offline-first, sem login e sem tracking.
 1. Selecione o scheme que inclui a extensão `FocusBrickWidgets`.
 2. Rode no simulador iOS.
 3. Adicione o widget small/medium na Home Screen e valide deep links para:
-   - sessão atual
-   - resumo diário
+   - current session
+   - daily summary
 
 ### Build de watchOS
 1. Selecione o scheme do app watchOS companion.
 2. Rode em simulador Apple Watch (pareado a iPhone).
-3. Validar start/pause/reset + sincronização essencial com iPhone.
+3. Validar start/pause/reset + essential sync with iPhone.
 
-## StoreKit (compra única)
+## StoreKit (one-time purchase)
 - Product id esperado: `focusbrick.pro.lifetime`
 - O app carrega os produtos no launch e expõe estado `isProUnlocked`.
 - Fluxos suportados:
@@ -41,7 +41,7 @@ Pomodoro app iOS (SwiftUI), offline-first, sem login e sem tracking.
   - restore purchases
   - desbloqueio local de features Pro
 
-## Notificações locais
+## Local notifications
 - O app solicita permissão de notificação no launch.
 - Notifica ao fim de cada fase (foco/pausa).
 
@@ -51,16 +51,16 @@ Pomodoro app iOS (SwiftUI), offline-first, sem login e sem tracking.
 - Sem backend.
 - Dados ficam somente no dispositivo (UserDefaults).
 
-## Publicação (resumo)
+## Release (summary)
 Use os documentos de release em `docs/`:
 - `docs/APP_STORE_CHECKLIST.md`
 - `docs/APP_STORE_METADATA_TEMPLATE.md`
 - `docs/ASSETS_PLACEHOLDERS.md`
 
-Passos mínimos:
+Minimum steps:
 1. Definir bundle id e assinatura.
 2. Validar Product ID do StoreKit no App Store Connect.
-3. Inserir ícones e launch screen finais.
+3. Add final icons and launch screen.
 4. Preencher metadados da App Store.
 5. Arquivar e enviar build para TestFlight.
-6. Enviar para revisão com privacidade marcada como **No Data Collected**.
+6. Submit for review with privacy set to **No Data Collected**.

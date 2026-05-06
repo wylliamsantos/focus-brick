@@ -3,22 +3,22 @@
 ## Nome do app
 Focus Brick
 
-## Subtítulo
+## Subtitle
 Pomodoro simples e offline
 
-## Descrição curta
-Timer Pomodoro offline-first para foco diário, com histórico local e compra única Pro.
+## Short description
+Timer Pomodoro offline-first para foco diário, com histórico local e one-time purchase Pro.
 
-## Descrição longa
-Focus Brick é um app de foco baseado na técnica Pomodoro, feito para ser simples, rápido e privado.
+## Long description
+Focus Brick is a Pomodoro-based focus app built to be simple, fast, and private.
 
-- Sessões de foco e pausa com ciclo completo
-- Histórico local dos últimos 7 dias
-- Contadores diários e streak
-- Notificações locais no fim das sessões
+- Focus and break sessions with full cycle
+- Local 7-day history
+- Daily counters and streak
+- Local notifications at session end
 - Sem login, sem backend e sem coleta de dados
 
-Versão Pro (compra única): recursos avançados como personalização extra de temas e configurações.
+Pro version (one-time purchase): advanced features like extra themes and customization.
 
 ## Keywords
 pomodoro, foco, produtividade, timer, estudo, trabalho, concentração, hábitos
@@ -32,7 +32,7 @@ Productivity
 ## Privacidade
 No Data Collected
 
-## Notas para revisão (IAP)
+## Review notes (IAP)
 - Product ID: `focusbrick.pro.lifetime`
 - A compra desbloqueia features Pro localmente.
-- O botão de restore fica disponível na tela de paywall.
+- The restore button is available on the paywall screen.
