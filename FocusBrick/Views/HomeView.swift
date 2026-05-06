@@ -67,6 +67,7 @@ struct HomeView: View {
                             .foregroundColor(FBColors.primary)
                         Text("Sessões concluídas: \(viewModel.todayCompletedSessions)")
                         Text("Minutos focados: \(viewModel.todayFocusedMinutes)")
+                        Text("Sequência atual: \(viewModel.dailyStreakDays) dia(s)")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()

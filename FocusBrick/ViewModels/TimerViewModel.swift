@@ -93,6 +93,28 @@ final class TimerViewModel: ObservableObject {
             .sorted { $0.endAt > $1.endAt }
     }
 
+    var dailyStreakDays: Int {
+        let calendar = Calendar.current
+        let focusDays = Set(
+            records
+                .filter { $0.phase == .focus && $0.completed }
+                .map { calendar.startOfDay(for: $0.endAt) }
+        )
+
+        guard !focusDays.isEmpty else { return 0 }
+
+        var streak = 0
+        var cursor = calendar.startOfDay(for: .now)
+
+        while focusDays.contains(cursor) {
+            streak += 1
+            guard let previous = calendar.date(byAdding: .day, value: -1, to: cursor) else { break }
+            cursor = previous
+        }
+
+        return streak
+    }
+
     func start() {
         guard !isRunning else { return }
         phaseStartedAt = .now
