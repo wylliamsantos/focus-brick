@@ -40,8 +40,8 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta), co
 - [x] 18. Deep link do widget para abrir app na tela correta.
 
 ### Fase 6 — watchOS companion
-- [ ] 19. Criar target watchOS (SwiftUI).
-- [ ] 20. Tela principal no watch (timer + start/pause/reset).
+- [x] 19. Criar target watchOS (SwiftUI).
+- [x] 20. Tela principal no watch (timer + start/pause/reset).
 - [ ] 21. Sincronizar estado essencial iPhone <-> Watch (WatchConnectivity).
 - [ ] 22. Complicações básicas (estado da sessão/tempo restante).
 
