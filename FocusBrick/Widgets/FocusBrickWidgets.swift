@@ -91,10 +91,34 @@ struct DailySummaryWidget: Widget {
     }
 }
 
+struct FocusComplicationWidget: Widget {
+    let kind: String = "FocusComplicationWidget"
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: FocusBrickProvider()) { entry in
+            ZStack {
+                AccessoryWidgetBackground()
+                VStack(spacing: 2) {
+                    Text(entry.snapshot.phaseLabel == "Foco" ? "Foco" : "Pausa")
+                        .font(.caption2)
+                    Text(entry.snapshot.displayTime)
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                }
+            }
+            .widgetURL(URL(string: "focusbrick://current-session"))
+        }
+        .configurationDisplayName("Focus Brick")
+        .description("Estado da sessão e tempo restante.")
+        .supportedFamilies([.accessoryCircular, .accessoryRectangular])
+    }
+}
+
 @main
 struct FocusBrickWidgets: WidgetBundle {
     var body: some Widget {
         CurrentSessionWidget()
         DailySummaryWidget()
+        FocusComplicationWidget()
     }
 }
