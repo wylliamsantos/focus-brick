@@ -51,10 +51,10 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta), co
 - [x] 25. Toggle de features Pro (temas extras / custom avançado).
 
 ### Fase 8 — Qualidade e release
-- [ ] 26. Ajustes finais de UI/UX e acessibilidade básica.
-- [ ] 27. Ícone/launch screen e textos da App Store.
-- [ ] 28. Checklist de submissão (Privacy: No Data Collected).
-- [ ] 29. README com instruções de build/publicação.
+- [x] 26. Ajustes finais de UI/UX e acessibilidade básica.
+- [x] 27. Ícone/launch screen e textos da App Store.
+- [x] 28. Checklist de submissão (Privacy: No Data Collected).
+- [x] 29. README com instruções de build/publicação.
 
 ## Critério de pronto (Definition of Done)
 - Timer funcional com ciclo completo.
@@ -68,9 +68,9 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta), co
 
 ## Status macro
 - [x] Base e core inicial
-- [ ] MVP iOS completo
-- [ ] Widgets completos
-- [ ] watchOS completo
+- [x] MVP iOS completo
+- [x] Widgets completos
+- [x] watchOS completo
 - [x] Monetização integrada
-- [ ] Release candidate
-- [ ] Entrega final
+- [x] Release candidate
+- [x] Entrega final

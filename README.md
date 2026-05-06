@@ -17,9 +17,21 @@ Pomodoro app iOS (SwiftUI), offline-first, sem login e sem tracking.
 
 ## Como buildar
 1. Abra o projeto no Xcode.
-2. Selecione um target iOS 17+ (simulador ou device).
+2. Selecione o scheme do app iOS e um target iOS 17+ (simulador ou device).
 3. Build: `Product > Build`.
 4. Run: `Product > Run`.
+
+### Build de Widgets
+1. Selecione o scheme que inclui a extensão `FocusBrickWidgets`.
+2. Rode no simulador iOS.
+3. Adicione o widget small/medium na Home Screen e valide deep links para:
+   - sessão atual
+   - resumo diário
+
+### Build de watchOS
+1. Selecione o scheme do app watchOS companion.
+2. Rode em simulador Apple Watch (pareado a iPhone).
+3. Validar start/pause/reset + sincronização essencial com iPhone.
 
 ## StoreKit (compra única)
 - Product id esperado: `focusbrick.pro.lifetime`
