@@ -13,7 +13,13 @@ Este documento marca os assets obrigatórios para publicação.
 ## Screenshots (App Store Connect)
 - [ ] iPhone 6.7" (mínimo 3)
 - [ ] iPhone 6.1" (mínimo 3)
+- [ ] iPad (opcional, se habilitar suporte)
 - [ ] Fluxos sugeridos: Home timer, Histórico, Configurações/Pro
+
+## Capturas complementares (recomendado)
+- [ ] Widget small e medium em tela inicial
+- [ ] Apple Watch: tela principal do timer
+- [ ] Apple Watch: estado pausado/finalizado
 
 ## Texto nas capturas
 - [ ] Headline 1: "Foque em blocos, sem distrações"

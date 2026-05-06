@@ -17,6 +17,8 @@
 - [ ] Persistência de estado após fechar/reabrir app
 - [ ] Histórico de 7 dias e contadores diários exibindo corretamente
 - [ ] Notificações locais no fim de sessão
+- [ ] Widgets small/medium abrindo deep link correto
+- [ ] Watch app com start/pause/reset e sync essencial
 - [ ] Compra e restore funcionando em ambiente de teste
 
 ## 4) Privacidade (App Privacy)
