@@ -46,9 +46,9 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta), co
 - [x] 22. Complicações básicas (estado da sessão/tempo restante).
 
 ### Fase 7 — Monetização
-- [ ] 23. Integrar StoreKit (compra única).
-- [ ] 24. Tela paywall simples + estado desbloqueado local.
-- [ ] 25. Toggle de features Pro (temas extras / custom avançado).
+- [x] 23. Integrar StoreKit (compra única).
+- [x] 24. Tela paywall simples + estado desbloqueado local.
+- [x] 25. Toggle de features Pro (temas extras / custom avançado).
 
 ### Fase 8 — Qualidade e release
 - [ ] 26. Ajustes finais de UI/UX e acessibilidade básica.
@@ -71,6 +71,6 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta), co
 - [ ] MVP iOS completo
 - [ ] Widgets completos
 - [ ] watchOS completo
-- [ ] Monetização integrada
+- [x] Monetização integrada
 - [ ] Release candidate
 - [ ] Entrega final
