@@ -76,6 +76,15 @@ final class TimerViewModel: ObservableObject {
 
         notificationService.requestAuthorizationIfNeeded()
         watchConnectivityService.activateIfNeeded()
+        watchConnectivityService.onCommand = { [weak self] command in
+            guard let self else { return }
+            switch command {
+            case .toggleRunPause:
+                self.isRunning ? self.pause() : self.start()
+            case .reset:
+                self.reset()
+            }
+        }
         if isRunning {
             scheduleEndNotification()
             startTicker()

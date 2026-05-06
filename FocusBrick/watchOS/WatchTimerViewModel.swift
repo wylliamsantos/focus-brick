@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 @MainActor
 final class WatchTimerViewModel: ObservableObject {
@@ -6,14 +7,27 @@ final class WatchTimerViewModel: ObservableObject {
     @Published var displayTime: String = "25:00"
     @Published var isRunning: Bool = false
 
+    private let syncService: WatchSyncService
+    private var cancellables = Set<AnyCancellable>()
+
+    init(syncService: WatchSyncService = WatchSyncService()) {
+        self.syncService = syncService
+
+        syncService.$latestState
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                guard let self, let state else { return }
+                self.apply(state)
+            }
+            .store(in: &cancellables)
+    }
+
     func toggleRunPause() {
-        isRunning.toggle()
-        // Placeholder: comando será enviado via WatchConnectivity para o iPhone.
+        syncService.send(.toggleRunPause)
     }
 
     func reset() {
-        isRunning = false
-        displayTime = "25:00"
+        syncService.send(.reset)
     }
 
     func apply(_ state: WatchSessionState) {

@@ -11,6 +11,11 @@ struct WatchSessionState: Codable, Equatable {
     let updatedAt: Date
 }
 
+enum WatchControlCommand: String, Codable {
+    case toggleRunPause
+    case reset
+}
+
 extension WatchSessionState {
     init(from timerState: TimerSessionState, snapshot: SessionSnapshot) {
         self.phaseLabel = snapshot.phaseLabel

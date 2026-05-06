@@ -4,13 +4,17 @@ import WatchConnectivity
 protocol WatchConnectivitySyncing {
     func activateIfNeeded()
     func send(state: WatchSessionState)
+    var onCommand: ((WatchControlCommand) -> Void)? { get set }
 }
 
 final class WatchConnectivityService: NSObject, WatchConnectivitySyncing {
     static let shared = WatchConnectivityService()
 
+    var onCommand: ((WatchControlCommand) -> Void)?
+
     private let session: WCSession?
     private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
 
     init(session: WCSession? = WCSession.isSupported() ? .default : nil) {
         self.session = session
@@ -51,4 +55,11 @@ extension WatchConnectivityService: WCSessionDelegate {
     func sessionWatchStateDidChange(_ session: WCSession) {}
 
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {}
+
+    func session(_ session: WCSession, didReceiveMessageData messageData: Data) {
+        guard let command = try? decoder.decode(WatchControlCommand.self, from: messageData) else { return }
+        DispatchQueue.main.async { [weak self] in
+            self?.onCommand?(command)
+        }
+    }
 }
