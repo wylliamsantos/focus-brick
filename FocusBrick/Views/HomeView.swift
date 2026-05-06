@@ -5,6 +5,8 @@ struct HomeView: View {
     @EnvironmentObject private var purchaseService: PurchaseService
     @State private var showingSettings = false
     @State private var showingPaywall = false
+    @AppStorage("pro.theme.enabled") private var proThemeEnabled = false
+    @AppStorage("pro.advanced.enabled") private var advancedCustomization = false
 
     var body: some View {
         NavigationStack {
@@ -18,7 +20,7 @@ struct HomeView: View {
 
                         Circle()
                             .trim(from: 0, to: viewModel.progress)
-                            .stroke(FBColors.primary, style: StrokeStyle(lineWidth: 14, lineCap: .round))
+                            .stroke(proThemeEnabled ? .purple : FBColors.primary, style: StrokeStyle(lineWidth: 14, lineCap: .round))
                             .rotationEffect(.degrees(-90))
                             .frame(width: 240, height: 240)
                             .animation(.easeInOut(duration: 0.25), value: viewModel.progress)
@@ -32,7 +34,7 @@ struct HomeView: View {
                             Text(viewModel.displayTime)
                                 .font(FBTypography.timer)
                                 .monospacedDigit()
-                                .foregroundColor(FBColors.primary)
+                                .foregroundColor(proThemeEnabled ? .purple : FBColors.primary)
                                 .accessibilityLabel("Tempo restante: \(viewModel.displayTime)")
                         }
                     }
@@ -141,8 +143,12 @@ struct HomeView: View {
                 }
             }
             .sheet(isPresented: $showingSettings) {
-                SettingsView(viewModel: viewModel)
-                    .environmentObject(purchaseService)
+                SettingsView(
+                    viewModel: viewModel,
+                    proThemeEnabled: $proThemeEnabled,
+                    advancedCustomization: $advancedCustomization
+                )
+                .environmentObject(purchaseService)
             }
             .sheet(isPresented: $showingPaywall) {
                 PaywallView()
@@ -154,6 +160,8 @@ struct HomeView: View {
 
 struct SettingsView: View {
     @ObservedObject var viewModel: TimerViewModel
+    @Binding var proThemeEnabled: Bool
+    @Binding var advancedCustomization: Bool
     @EnvironmentObject private var purchaseService: PurchaseService
     @Environment(\.dismiss) private var dismiss
 
@@ -162,8 +170,6 @@ struct SettingsView: View {
     @State private var longBreak = "15"
     @State private var cycle = "4"
     @State private var selectedPreset: Preset = .default255
-    @State private var proThemeEnabled = false
-    @State private var advancedCustomization = false
 
     enum Preset: String, CaseIterable, Identifiable {
         case default255 = "Padrão 25/5"
