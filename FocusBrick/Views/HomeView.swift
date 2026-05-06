@@ -17,6 +17,7 @@ struct HomeView: View {
                         Circle()
                             .stroke(FBColors.secondary.opacity(0.2), lineWidth: 14)
                             .frame(width: 240, height: 240)
+                            .accessibilityHidden(true)
 
                         Circle()
                             .trim(from: 0, to: viewModel.progress)
@@ -24,6 +25,7 @@ struct HomeView: View {
                             .rotationEffect(.degrees(-90))
                             .frame(width: 240, height: 240)
                             .animation(.easeInOut(duration: 0.25), value: viewModel.progress)
+                            .accessibilityHidden(true)
 
                         VStack(spacing: FBSpacing.sm) {
                             Text(viewModel.currentPhaseLabel)
@@ -38,6 +40,9 @@ struct HomeView: View {
                                 .accessibilityLabel("Tempo restante: \(viewModel.displayTime)")
                         }
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Sessão atual")
+                    .accessibilityValue("\(viewModel.currentPhaseLabel). Tempo restante \(viewModel.displayTime). \(viewModel.cycleProgressLabel)")
 
                     Text(viewModel.cycleProgressLabel)
                         .font(FBTypography.body)

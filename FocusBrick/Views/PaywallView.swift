@@ -21,6 +21,7 @@ struct PaywallView: View {
                         Task { await purchaseService.buyPro() }
                     }
                     .buttonStyle(.borderedProminent)
+                    .accessibilityHint("Compra única para liberar os recursos Pro")
                 } else if purchaseService.isLoading {
                     ProgressView("Carregando opções...")
                 } else {
