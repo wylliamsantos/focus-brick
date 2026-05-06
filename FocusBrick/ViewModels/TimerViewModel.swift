@@ -43,7 +43,7 @@ final class TimerViewModel: ObservableObject {
     private var phaseStartedAt: Date = .now
 
     init(config: PomodoroConfig = .init(), store: SessionStore = UserDefaultsSessionStore(), notificationService: NotificationService = UserNotificationService()) {
-        self.config = config
+        self.config = store.loadConfig() ?? config
         self.store = store
         self.notificationService = notificationService
         self.records = store.loadAll()
@@ -56,8 +56,8 @@ final class TimerViewModel: ObservableObject {
             self.isRunning = state.isRunning
             self.displayTime = Self.format(seconds: state.secondsRemaining)
             self.currentPhaseLabel = restoredPhase.rawValue
-            self.cycleProgressLabel = "Ciclo \(state.completedFocusSessions % max(1, config.sessionsBeforeLongBreak))/\(max(1, config.sessionsBeforeLongBreak))"
-            self.progress = Self.computeProgress(remaining: state.secondsRemaining, total: Self.duration(for: restoredPhase, config: config))
+            self.cycleProgressLabel = "Ciclo \(state.completedFocusSessions % max(1, self.config.sessionsBeforeLongBreak))/\(max(1, self.config.sessionsBeforeLongBreak))"
+            self.progress = Self.computeProgress(remaining: state.secondsRemaining, total: Self.duration(for: restoredPhase, config: self.config))
         } else {
             self.phase = .focus
             self.secondsRemaining = config.focusMinutes * 60
@@ -128,6 +128,7 @@ final class TimerViewModel: ObservableObject {
 
     func updateConfig(_ config: PomodoroConfig) {
         self.config = config
+        store.saveConfig(config)
         reset()
     }
 

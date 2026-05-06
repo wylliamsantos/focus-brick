@@ -147,12 +147,37 @@ struct SettingsView: View {
     @State private var shortBreak = "5"
     @State private var longBreak = "15"
     @State private var cycle = "4"
+    @State private var selectedPreset: Preset = .default255
     @State private var proThemeEnabled = false
     @State private var advancedCustomization = false
+
+    enum Preset: String, CaseIterable, Identifiable {
+        case default255 = "Padrão 25/5"
+        case custom = "Custom"
+
+        var id: String { rawValue }
+    }
 
     var body: some View {
         NavigationStack {
             Form {
+                Section("Preset") {
+                    Picker("Preset", selection: $selectedPreset) {
+                        ForEach(Preset.allCases) { preset in
+                            Text(preset.rawValue).tag(preset)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .onChange(of: selectedPreset) { _, newValue in
+                        if newValue == .default255 {
+                            focus = "25"
+                            shortBreak = "5"
+                            longBreak = "15"
+                            cycle = "4"
+                        }
+                    }
+                }
+
                 Section("Duração (min)") {
                     TextField("Foco", text: $focus).keyboardType(.numberPad)
                     TextField("Pausa", text: $shortBreak).keyboardType(.numberPad)
@@ -199,7 +224,12 @@ struct SettingsView: View {
                 shortBreak = String(viewModel.config.shortBreakMinutes)
                 longBreak = String(viewModel.config.longBreakMinutes)
                 cycle = String(viewModel.config.sessionsBeforeLongBreak)
+                selectedPreset = (viewModel.config.focusMinutes == 25 && viewModel.config.shortBreakMinutes == 5 && viewModel.config.longBreakMinutes == 15 && viewModel.config.sessionsBeforeLongBreak == 4) ? .default255 : .custom
             }
+            .onChange(of: focus) { _, _ in selectedPreset = .custom }
+            .onChange(of: shortBreak) { _, _ in selectedPreset = .custom }
+            .onChange(of: longBreak) { _, _ in selectedPreset = .custom }
+            .onChange(of: cycle) { _, _ in selectedPreset = .custom }
         }
     }
 }

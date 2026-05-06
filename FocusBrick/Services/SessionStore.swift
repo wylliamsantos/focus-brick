@@ -5,6 +5,8 @@ protocol SessionStore {
     func loadAll() -> [SessionRecord]
     func saveState(_ state: TimerSessionState)
     func loadState() -> TimerSessionState?
+    func saveConfig(_ config: PomodoroConfig)
+    func loadConfig() -> PomodoroConfig?
 }
 
 struct TimerSessionState: Codable, Equatable {
@@ -19,6 +21,7 @@ final class UserDefaultsSessionStore: SessionStore {
     private enum Keys {
         static let records = "focusbrick.session.records"
         static let state = "focusbrick.session.state"
+        static let config = "focusbrick.session.config"
     }
 
     private let defaults: UserDefaults
@@ -55,5 +58,18 @@ final class UserDefaultsSessionStore: SessionStore {
             return nil
         }
         return state
+    }
+
+    func saveConfig(_ config: PomodoroConfig) {
+        guard let data = try? encoder.encode(config) else { return }
+        defaults.set(data, forKey: Keys.config)
+    }
+
+    func loadConfig() -> PomodoroConfig? {
+        guard let data = defaults.data(forKey: Keys.config),
+              let config = try? decoder.decode(PomodoroConfig.self, from: data) else {
+            return nil
+        }
+        return config
     }
 }
