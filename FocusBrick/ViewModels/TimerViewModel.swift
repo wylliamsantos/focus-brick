@@ -34,6 +34,12 @@ final class TimerViewModel: ObservableObject {
     @Published private(set) var progress: Double = 1
     @Published private(set) var records: [SessionRecord] = []
     @Published var config: PomodoroConfig
+    @Published var deepLinkTarget: DeepLinkTarget?
+
+    enum DeepLinkTarget {
+        case currentSession
+        case dailySummary
+    }
 
     private let store: SessionStore
     private let notificationService: NotificationService
@@ -71,6 +77,7 @@ final class TimerViewModel: ObservableObject {
             scheduleEndNotification()
             startTicker()
         }
+        saveWidgetSnapshot()
     }
 
     deinit { timer?.invalidate() }
@@ -154,6 +161,15 @@ final class TimerViewModel: ObservableObject {
         reset()
     }
 
+    func handleDeepLink(_ url: URL) {
+        guard url.scheme == "focusbrick" else { return }
+        switch url.host {
+        case "current-session": deepLinkTarget = .currentSession
+        case "daily-summary": deepLinkTarget = .dailySummary
+        default: break
+        }
+    }
+
     private func startTicker() {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
@@ -218,6 +234,19 @@ final class TimerViewModel: ObservableObject {
     private func persistState() {
         let state = TimerSessionState(phase: phase.sessionPhase, secondsRemaining: secondsRemaining, completedFocusSessions: completedFocusSessions, isRunning: isRunning, savedAt: .now)
         store.saveState(state)
+        saveWidgetSnapshot()
+    }
+
+    private func saveWidgetSnapshot() {
+        let snapshot = SessionSnapshot(
+            phaseLabel: currentPhaseLabel,
+            displayTime: displayTime,
+            isRunning: isRunning,
+            todayCompletedSessions: todayCompletedSessions,
+            todayFocusedMinutes: todayFocusedMinutes,
+            updatedAt: .now
+        )
+        store.saveWidgetSnapshot(snapshot)
     }
 
     private func scheduleEndNotification() {

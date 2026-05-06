@@ -7,6 +7,8 @@ protocol SessionStore {
     func loadState() -> TimerSessionState?
     func saveConfig(_ config: PomodoroConfig)
     func loadConfig() -> PomodoroConfig?
+    func saveWidgetSnapshot(_ snapshot: SessionSnapshot)
+    func loadWidgetSnapshot() -> SessionSnapshot?
 }
 
 struct TimerSessionState: Codable, Equatable {
@@ -22,6 +24,7 @@ final class UserDefaultsSessionStore: SessionStore {
         static let records = "focusbrick.session.records"
         static let state = "focusbrick.session.state"
         static let config = "focusbrick.session.config"
+        static let widgetSnapshot = "focusbrick.widget.snapshot"
     }
 
     private let defaults: UserDefaults
@@ -71,5 +74,18 @@ final class UserDefaultsSessionStore: SessionStore {
             return nil
         }
         return config
+    }
+
+    func saveWidgetSnapshot(_ snapshot: SessionSnapshot) {
+        guard let data = try? encoder.encode(snapshot) else { return }
+        defaults.set(data, forKey: Keys.widgetSnapshot)
+    }
+
+    func loadWidgetSnapshot() -> SessionSnapshot? {
+        guard let data = defaults.data(forKey: Keys.widgetSnapshot),
+              let snapshot = try? decoder.decode(SessionSnapshot.self, from: data) else {
+            return nil
+        }
+        return snapshot
     }
 }
