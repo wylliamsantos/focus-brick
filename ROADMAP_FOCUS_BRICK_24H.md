@@ -25,13 +25,13 @@ Objetivo: entregar um app iOS SwiftUI (offline-first, sem login, sem coleta), co
 ### Fase 3 — UX principal iOS
 - [x] 8. Tela Home com timer grande + progresso circular.
 - [x] 9. Tela Configurações (25/5 default + custom).
-- [ ] 10. Feedback sonoro/háptico de término de sessão.
-- [ ] 11. Notificações locais para fim de foco/pausa.
+- [x] 10. Feedback sonoro/háptico de término de sessão.
+- [x] 11. Notificações locais para fim de foco/pausa.
 
 ### Fase 4 — Histórico e métricas
-- [ ] 12. Histórico últimos 7 dias.
-- [ ] 13. Contadores do dia (sessões, minutos focados).
-- [ ] 14. Card de sequência diária (streak simples local).
+- [x] 12. Histórico últimos 7 dias.
+- [x] 13. Contadores do dia (sessões, minutos focados).
+- [x] 14. Card de sequência diária (streak simples local).
 
 ### Fase 5 — Widgets (iOS)
 - [ ] 15. Criar extensão WidgetKit (small/medium).
