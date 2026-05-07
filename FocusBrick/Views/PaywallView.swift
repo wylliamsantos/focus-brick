@@ -11,7 +11,7 @@ struct PaywallView: View {
                     .font(FBTypography.timer)
                     .multilineTextAlignment(.center)
 
-                Text("Compra única para desbloquear temas extras e customização avançada.")
+                Text("One-time purchase to unlock extra themes and advanced customization.")
                     .font(FBTypography.body)
                     .foregroundColor(FBColors.secondary)
                     .multilineTextAlignment(.center)
@@ -21,21 +21,21 @@ struct PaywallView: View {
                         Task { await purchaseService.buyPro() }
                     }
                     .buttonStyle(.borderedProminent)
-                    .accessibilityHint("Compra única para liberar os recursos Pro")
+                    .accessibilityHint("One-time purchase to unlock Pro features")
                 } else if purchaseService.isLoading {
-                    ProgressView("Carregando opções...")
+                    ProgressView("Loading options...")
                 } else {
-                    Text("Produto indisponível no momento.")
+                    Text("Product unavailable at the moment.")
                         .foregroundColor(.secondary)
                 }
 
-                Button("Restaurar compras") {
+                Button("Restore purchases") {
                     Task { await purchaseService.restorePurchases() }
                 }
                 .buttonStyle(.bordered)
 
                 if purchaseService.isProUnlocked {
-                    Text("Pro desbloqueado ✅")
+                    Text("Pro unlocked ✅")
                         .foregroundColor(.green)
                 }
 
@@ -44,8 +44,8 @@ struct PaywallView: View {
             .padding(FBSpacing.lg)
             .navigationTitle("Upgrade")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Fechar") { dismiss() }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Close") { dismiss() }
                 }
             }
         }
