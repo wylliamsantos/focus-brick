@@ -10,10 +10,10 @@ final class WatchTimerViewModel: ObservableObject {
     private let syncService: WatchSyncService
     private var cancellables = Set<AnyCancellable>()
 
-    init(syncService: WatchSyncService? = nil) {
-        self.syncService = syncService ?? WatchSyncService()
+    init(syncService: WatchSyncService = WatchSyncService()) {
+        self.syncService = syncService
 
-        syncService.$latestState
+        self.syncService.$latestState
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 guard let self, let state else { return }
