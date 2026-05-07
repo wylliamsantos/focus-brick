@@ -16,8 +16,8 @@ struct PaywallView: View {
                     .foregroundColor(FBColors.secondary)
                     .multilineTextAlignment(.center)
 
-                if let product = purchaseService.product {
-                    Button("Desbloquear por \(product.displayPrice)") {
+                if purchaseService.hasProduct {
+                    Button("Unlock for \(purchaseService.productPriceText)") {
                         Task { await purchaseService.buyPro() }
                     }
                     .buttonStyle(.borderedProminent)
@@ -44,7 +44,7 @@ struct PaywallView: View {
             .padding(FBSpacing.lg)
             .navigationTitle("Upgrade")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem {
                     Button("Close") { dismiss() }
                 }
             }

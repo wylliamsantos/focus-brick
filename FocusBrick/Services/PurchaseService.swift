@@ -8,6 +8,9 @@ final class PurchaseService: ObservableObject {
     @Published private(set) var isProUnlocked: Bool = false
     @Published private(set) var isLoading: Bool = false
 
+    var hasProduct: Bool { product != nil }
+    var productPriceText: String { product?.displayPrice ?? "$4.99" }
+
     let productID = "focusbrick.pro.lifetime"
     private let unlockKey = "focusbrick.pro.unlocked"
 
