@@ -1,6 +1,6 @@
 import Foundation
 
-protocol WatchConnectivitySyncing {
+protocol WatchConnectivitySyncing: AnyObject {
     func activateIfNeeded()
     func send(state: WatchSessionState)
     var onCommand: ((WatchControlCommand) -> Void)? { get set }

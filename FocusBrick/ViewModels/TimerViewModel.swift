@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import AudioToolbox
 
 @MainActor
@@ -271,9 +272,7 @@ final class TimerViewModel: ObservableObject {
     }
 
     private func playCompletionFeedback() {
-        
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
+        AudioServicesPlaySystemSound(1005)
     }
 
     private static func computeProgress(remaining: Int, total: Int) -> Double {

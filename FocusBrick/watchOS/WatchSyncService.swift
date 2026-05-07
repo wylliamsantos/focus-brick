@@ -3,7 +3,6 @@ import Foundation
 #if canImport(WatchConnectivity)
 import WatchConnectivity
 
-@MainActor
 final class WatchSyncService: NSObject, ObservableObject {
     @Published private(set) var latestState: WatchSessionState?
 
@@ -49,7 +48,6 @@ extension WatchSyncService: WCSessionDelegate {
 
 #else
 
-@MainActor
 final class WatchSyncService: ObservableObject {
     @Published private(set) var latestState: WatchSessionState?
     func send(_ command: WatchControlCommand) {}
