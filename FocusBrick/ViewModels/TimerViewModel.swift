@@ -49,12 +49,13 @@ final class TimerViewModel: ObservableObject {
     private var completedFocusSessions: Int = 0
     private var phaseStartedAt: Date = .now
 
-    init(config: PomodoroConfig = .init(), store: SessionStore? = nil, notificationService: NotificationService? = nil, watchConnectivityService: WatchConnectivitySyncing? = nil) {
-        let resolvedStore = store ?? UserDefaultsSessionStore()
-        let resolvedNotificationService = notificationService ?? UserNotificationService()
-        let resolvedWatchConnectivityService = watchConnectivityService ?? WatchConnectivityService.shared
+    init(config: PomodoroConfig = .init(), store: SessionStore, notificationService: NotificationService, watchConnectivityService: WatchConnectivitySyncing) {
+        let resolvedStore = store
+        let resolvedNotificationService = notificationService
+        let resolvedWatchConnectivityService = watchConnectivityService
+        let effectiveConfig = resolvedStore.loadConfig() ?? config
 
-        self.config = resolvedStore.loadConfig() ?? config
+        self.config = effectiveConfig
         self.store = resolvedStore
         self.notificationService = resolvedNotificationService
         self.watchConnectivityService = resolvedWatchConnectivityService
@@ -68,8 +69,8 @@ final class TimerViewModel: ObservableObject {
             self.isRunning = state.isRunning
             self.displayTime = Self.format(seconds: state.secondsRemaining)
             self.currentPhaseLabel = restoredPhase.rawValue
-            self.cycleProgressLabel = "Cycle \(state.completedFocusSessions % max(1, self.config.sessionsBeforeLongBreak))/\(max(1, self.config.sessionsBeforeLongBreak))"
-            self.progress = Self.computeProgress(remaining: state.secondsRemaining, total: Self.duration(for: restoredPhase, config: self.config))
+            self.cycleProgressLabel = "Cycle \(state.completedFocusSessions % max(1, effectiveConfig.sessionsBeforeLongBreak))/\(max(1, effectiveConfig.sessionsBeforeLongBreak))"
+            self.progress = Self.computeProgress(remaining: state.secondsRemaining, total: Self.duration(for: restoredPhase, config: effectiveConfig))
         } else {
             self.phase = .focus
             self.secondsRemaining = config.focusMinutes * 60
