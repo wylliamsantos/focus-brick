@@ -118,8 +118,9 @@ struct FocusComplicationWidget: Widget {
     }
 }
 
-@main
-struct FocusBrickWidgets: WidgetBundle {
+// Widget bundle entrypoint should live in a dedicated widget extension target.
+// Keeping it as a regular bundle type avoids duplicate @main in single-target setups.
+struct FocusBrickWidgetsBundle: WidgetBundle {
     var body: some Widget {
         CurrentSessionWidget()
         DailySummaryWidget()

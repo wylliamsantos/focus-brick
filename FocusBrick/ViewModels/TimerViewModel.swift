@@ -78,9 +78,9 @@ final class TimerViewModel: ObservableObject {
             self.cycleProgressLabel = "Cycle 0/\(max(1, config.sessionsBeforeLongBreak))"
         }
 
-        notificationService.requestAuthorizationIfNeeded()
-        watchConnectivityService.activateIfNeeded()
-        watchConnectivityService.onCommand = { [weak self] command in
+        self.notificationService.requestAuthorizationIfNeeded()
+        self.watchConnectivityService.activateIfNeeded()
+        self.watchConnectivityService.onCommand = { [weak self] command in
             guard let self else { return }
             switch command {
             case .toggleRunPause:
