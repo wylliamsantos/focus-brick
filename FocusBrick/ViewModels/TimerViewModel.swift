@@ -1,13 +1,12 @@
 import Foundation
-import UIKit
 import AudioToolbox
 
 @MainActor
 final class TimerViewModel: ObservableObject {
     enum Phase: String {
-        case focus = "Foco"
-        case shortBreak = "Pausa"
-        case longBreak = "Pausa Longa"
+        case focus = "Focus"
+        case shortBreak = "Short Break"
+        case longBreak = "Long Break"
 
         var sessionPhase: SessionRecord.Phase {
             switch self {
@@ -64,14 +63,14 @@ final class TimerViewModel: ObservableObject {
             self.isRunning = state.isRunning
             self.displayTime = Self.format(seconds: state.secondsRemaining)
             self.currentPhaseLabel = restoredPhase.rawValue
-            self.cycleProgressLabel = "Ciclo \(state.completedFocusSessions % max(1, self.config.sessionsBeforeLongBreak))/\(max(1, self.config.sessionsBeforeLongBreak))"
+            self.cycleProgressLabel = "Cycle \(state.completedFocusSessions % max(1, self.config.sessionsBeforeLongBreak))/\(max(1, self.config.sessionsBeforeLongBreak))"
             self.progress = Self.computeProgress(remaining: state.secondsRemaining, total: Self.duration(for: restoredPhase, config: self.config))
         } else {
             self.phase = .focus
             self.secondsRemaining = config.focusMinutes * 60
             self.displayTime = Self.format(seconds: config.focusMinutes * 60)
             self.currentPhaseLabel = Phase.focus.rawValue
-            self.cycleProgressLabel = "Ciclo 0/\(max(1, config.sessionsBeforeLongBreak))"
+            self.cycleProgressLabel = "Cycle 0/\(max(1, config.sessionsBeforeLongBreak))"
         }
 
         notificationService.requestAuthorizationIfNeeded()
@@ -239,7 +238,7 @@ final class TimerViewModel: ObservableObject {
     private func refreshPresentation() {
         displayTime = Self.format(seconds: secondsRemaining)
         currentPhaseLabel = phase.rawValue
-        cycleProgressLabel = "Ciclo \(completedFocusSessions % max(1, config.sessionsBeforeLongBreak))/\(max(1, config.sessionsBeforeLongBreak))"
+        cycleProgressLabel = "Cycle \(completedFocusSessions % max(1, config.sessionsBeforeLongBreak))/\(max(1, config.sessionsBeforeLongBreak))"
         progress = Self.computeProgress(remaining: secondsRemaining, total: duration(for: phase))
     }
 
@@ -272,7 +271,7 @@ final class TimerViewModel: ObservableObject {
     }
 
     private func playCompletionFeedback() {
-        AudioServicesPlaySystemSound(1005)
+        
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
     }

@@ -1,11 +1,13 @@
 import Foundation
-import WatchConnectivity
 
 protocol WatchConnectivitySyncing {
     func activateIfNeeded()
     func send(state: WatchSessionState)
     var onCommand: ((WatchControlCommand) -> Void)? { get set }
 }
+
+#if canImport(WatchConnectivity)
+import WatchConnectivity
 
 final class WatchConnectivityService: NSObject, WatchConnectivitySyncing {
     static let shared = WatchConnectivityService()
@@ -41,11 +43,7 @@ final class WatchConnectivityService: NSObject, WatchConnectivitySyncing {
             session.sendMessageData(payloadData, replyHandler: nil, errorHandler: nil)
         }
 
-        do {
-            try session.updateApplicationContext(payload)
-        } catch {
-            // noop: best effort sync
-        }
+        try? session.updateApplicationContext(payload)
     }
 }
 
@@ -63,3 +61,14 @@ extension WatchConnectivityService: WCSessionDelegate {
         }
     }
 }
+
+#else
+
+final class WatchConnectivityService: WatchConnectivitySyncing {
+    static let shared = WatchConnectivityService()
+    var onCommand: ((WatchControlCommand) -> Void)?
+    func activateIfNeeded() {}
+    func send(state: WatchSessionState) {}
+}
+
+#endif
