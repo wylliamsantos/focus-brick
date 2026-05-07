@@ -31,7 +31,7 @@ struct CurrentSessionWidgetView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Sessão Atual")
+            Text("Current Session")
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Text(entry.snapshot.phaseLabel)
@@ -39,7 +39,7 @@ struct CurrentSessionWidgetView: View {
             Text(entry.snapshot.displayTime)
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .monospacedDigit()
-            Text(entry.snapshot.isRunning ? "Em andamento" : "Pausado")
+            Text(entry.snapshot.isRunning ? "Running" : "Paused")
                 .font(.caption2)
                 .foregroundStyle(entry.snapshot.isRunning ? .green : .orange)
         }
@@ -53,11 +53,11 @@ struct DailySummaryWidgetView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Resumo do Dia")
+            Text("Daily Summary")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text("Sessões: \(entry.snapshot.todayCompletedSessions)")
-            Text("Foco: \(entry.snapshot.todayFocusedMinutes) min")
+            Text("Sessions: \(entry.snapshot.todayCompletedSessions)")
+            Text("Focus: \(entry.snapshot.todayFocusedMinutes) min")
                 .font(.headline)
         }
         .containerBackground(.fill.tertiary, for: .widget)
@@ -72,8 +72,8 @@ struct CurrentSessionWidget: Widget {
         StaticConfiguration(kind: kind, provider: FocusBrickProvider()) { entry in
             CurrentSessionWidgetView(entry: entry)
         }
-        .configurationDisplayName("Sessão Atual")
-        .description("Mostra fase atual, tempo restante e estado.")
+        .configurationDisplayName("Current Session")
+        .description("Shows current phase, remaining time, and status.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -85,8 +85,8 @@ struct DailySummaryWidget: Widget {
         StaticConfiguration(kind: kind, provider: FocusBrickProvider()) { entry in
             DailySummaryWidgetView(entry: entry)
         }
-        .configurationDisplayName("Resumo do Dia")
-        .description("Mostra sessões concluídas e minutos focados no dia.")
+        .configurationDisplayName("Daily Summary")
+        .description("Shows completed sessions and focused minutes for today.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -99,7 +99,7 @@ struct FocusComplicationWidget: Widget {
             ZStack {
                 AccessoryWidgetBackground()
                 VStack(spacing: 2) {
-                    Text(entry.snapshot.phaseLabel == "Foco" ? "Foco" : "Pausa")
+                    Text(entry.snapshot.phaseLabel == "Focus" ? "Focus" : "Break")
                         .font(.caption2)
                     Text(entry.snapshot.displayTime)
                         .font(.system(size: 14, weight: .semibold, design: .rounded))
@@ -109,8 +109,12 @@ struct FocusComplicationWidget: Widget {
             .widgetURL(URL(string: "focusbrick://current-session"))
         }
         .configurationDisplayName("Focus Brick")
-        .description("Estado da sessão e tempo restante.")
+        .description("Session state and remaining time.")
+        #if os(watchOS)
         .supportedFamilies([.accessoryCircular, .accessoryRectangular])
+        #else
+        .supportedFamilies([.systemSmall])
+        #endif
     }
 }
 
