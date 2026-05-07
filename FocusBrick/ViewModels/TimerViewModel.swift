@@ -49,14 +49,18 @@ final class TimerViewModel: ObservableObject {
     private var completedFocusSessions: Int = 0
     private var phaseStartedAt: Date = .now
 
-    init(config: PomodoroConfig = .init(), store: SessionStore = UserDefaultsSessionStore(), notificationService: NotificationService = UserNotificationService(), watchConnectivityService: WatchConnectivitySyncing = WatchConnectivityService.shared) {
-        self.config = store.loadConfig() ?? config
-        self.store = store
-        self.notificationService = notificationService
-        self.watchConnectivityService = watchConnectivityService
-        self.records = store.loadAll()
+    init(config: PomodoroConfig = .init(), store: SessionStore? = nil, notificationService: NotificationService? = nil, watchConnectivityService: WatchConnectivitySyncing? = nil) {
+        let resolvedStore = store ?? UserDefaultsSessionStore()
+        let resolvedNotificationService = notificationService ?? UserNotificationService()
+        let resolvedWatchConnectivityService = watchConnectivityService ?? WatchConnectivityService.shared
 
-        if let state = store.loadState() {
+        self.config = resolvedStore.loadConfig() ?? config
+        self.store = resolvedStore
+        self.notificationService = resolvedNotificationService
+        self.watchConnectivityService = resolvedWatchConnectivityService
+        self.records = resolvedStore.loadAll()
+
+        if let state = resolvedStore.loadState() {
             let restoredPhase = Phase(sessionPhase: state.phase)
             self.phase = restoredPhase
             self.secondsRemaining = state.secondsRemaining
